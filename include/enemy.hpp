@@ -10,8 +10,7 @@ class Enemy {
         int maxHp = 10;
         float speed = 1;
         int reward = 5;
-        int posX = 0;
-        int posY = 0;
+        Position position;
         bool isAlive = true;
     
     public:

@@ -13,6 +13,6 @@ void Enemy::die() {
 }
 
 void Enemy::move(int x, int y) {
-    this->posX += x;
-    this->posY += y;
+    this->position.set_x(x);
+    this->position.set_y(y);
 }

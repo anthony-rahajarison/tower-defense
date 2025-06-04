@@ -3,7 +3,6 @@
 
 void Player::addCredit(int c) {
     this->credit += c;
-
 };
 
 void Player::removeCredit(int c){

@@ -6,7 +6,6 @@ class Player {
         int remainingLives = 3 ;
         int credit = 0;
         bool gameover = false;
-
     public :
         void addCredit(int c);
         void removeCredit(int c);

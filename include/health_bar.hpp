@@ -5,8 +5,6 @@ class health_bar {
     public : 
         int postion = 0;
         int currentHealth  = 100;
-        int enemy = Enemy;
-
-    void updateValue();
-}
+        void updateValue();
+};
 #endif
