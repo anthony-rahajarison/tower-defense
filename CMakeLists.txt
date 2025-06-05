@@ -10,8 +10,10 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-add_executable(TowerDefense ${SOURCES})
+add_executable(TowerDefense menu.cpp )
+
+# ${SOURCES}
 
 target_include_directories(TowerDefense PRIVATE include ${SFML_INCLUDE_DIR})
 
-target_link_libraries(TowerDefense sfml-graphics sfml-window sfml-system)
+target_link_libraries(TowerDefense sfml-graphics sfml-window sfml-system sfml-audio)
