@@ -1,10 +1,10 @@
-#include "tower.hpp"
+// #include "tower.hpp"
 
-#ifndef GAME_HPP
-#define GAME_HPP
+// #ifndef GAME_HPP
+// #define GAME_HPP
 
-class Map {
-    public:
-    Tower tower;
+// class Map {
+//     public:
+//     Tower tower;
     
-}
+// }

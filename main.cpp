@@ -1,16 +1,12 @@
-#include <iostream>
 #include "MainMenu.hpp"
-
 
 int main() {
     try {
-        MainMenu MainMenu;
-        MainMenu.run();
+        Menu menu;
+        menu.run();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         return -1;
     }
     return 0;
 }
-
-
