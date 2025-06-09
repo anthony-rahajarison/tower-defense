@@ -3,14 +3,28 @@
 #include "Wave.hpp"
 #ifndef GAME_HPP
 #define GAME_HPP
+#include <SFML/Graphics.hpp>
+
+
+enum class AppState {
+    MainMenu,
+    InGame,
+    ScoreScreen,
+    Exit
+};
+
 
 class Game {
     public:
     Player player;
-    MAP map;
     Wave wave;
     int currentWaves = 1 ;
+    Game(sf::RenderWindow& win);
+    AppState run();
+
+    private:
+    sf::RenderWindow& window;
 
 
-}
+};
 #endif

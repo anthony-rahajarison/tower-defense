@@ -10,7 +10,9 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
-add_executable(TowerDefense src/MainMenu.cpp include/MainMenu.hpp src/main.cpp)
+add_executable(TowerDefense     src/main.cpp
+    src/MainMenu.cpp
+    src/Game.cpp   )
 
 # ${SOURCES}
 

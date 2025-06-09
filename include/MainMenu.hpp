@@ -1,43 +1,22 @@
-#ifndef MAINMENU_HPP
-#define MAINMENU_HPP
-
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <string>
 
-enum class GameState {
-    MainMenu,
-    Playing,
-    Score
-};
-
+enum class AppState;
 
 class MainMenu {
 public:
-    MainMenu();  
-    void run();
-    void handleEvents();
-    void render();
+    MainMenu(sf::RenderWindow& win);
+    AppState run();
 
 private:
-    sf::RenderWindow window;  
-
-    sf::Texture backgroundTexture;
-    sf::Sprite background;
-
-    sf::Texture playButtonTexture;
-    sf::Sprite playButton;
-
-    sf::Texture scoreButtonTexture;
-    sf::Sprite scoreButton;
-
-    sf::Texture soundOnTexture, soundOffTexture;
-    sf::Sprite soundButton;
-
+    sf::RenderWindow& window;
+    sf::Texture backgroundTexture, playButtonTexture, scoreButtonTexture, soundOnTexture, soundOffTexture;
+    sf::Sprite background, playButton, scoreButton, soundButton;
     sf::SoundBuffer buffer;
     sf::Sound clickSound;
-
     bool isMuted = false;
-};
 
-#endif
+    void render();
+    AppState handleEvents();
+};

@@ -1,116 +1,73 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <iostream>
 #include "MainMenu.hpp"
+#include <iostream>
 
+enum class AppState {
+    MainMenu,
+    Game,
+    Score,
+    Exit
+};
 
-MainMenu::MainMenu() 
-    : window(sf::VideoMode(800, 1000), "KINGDOM SIEGE"), isMuted(false)
-
-{
-    //background
-
-    if (!backgroundTexture.loadFromFile("./assets/backgroundMainMenu.png")) {
-        std::cout << "Erreur: Impossible de charger l'image de fond!" << std::endl;
-    }
+MainMenu::MainMenu(sf::RenderWindow& win) : window(win) {
+    backgroundTexture.loadFromFile("./assets/backgroundMainMenu.png");
     background.setTexture(backgroundTexture);
-    background.setScale(
-        800.0f / background.getLocalBounds().width,
-        1000.0f / background.getLocalBounds().height
-    );
+    background.setScale(800.0f / background.getLocalBounds().width, 1000.0f / background.getLocalBounds().height);
 
-    //play button
-    if (!playButtonTexture.loadFromFile("./assets/buttons/buton_play.png")) {
-        std::cout << "Erreur: Impossible de charger le bouton Play!" << std::endl;
-    }
-        playButton.setTexture(playButtonTexture);
-        playButton.setScale(
-        300.0f / playButton.getLocalBounds().width,
-        100.0f / playButton.getLocalBounds().height
-    );
-        playButton.setPosition(400, 250);
+    playButtonTexture.loadFromFile("./assets/buttons/buton_play.png");
+    playButton.setTexture(playButtonTexture);
+    playButton.setScale(300.0f / playButton.getLocalBounds().width, 100.0f / playButton.getLocalBounds().height);
+    playButton.setPosition(400, 250);
 
-     //score button
-    if (!scoreButtonTexture.loadFromFile("./assets/buttons/score.png")) {
-        std::cout << "Erreur: Impossible de charger le bouton Score !" << std::endl;
-    }
-        scoreButton.setTexture(scoreButtonTexture);
-        scoreButton.setScale(
-        300.0f / scoreButton.getLocalBounds().width,
-        100.0f / scoreButton.getLocalBounds().height
-    );
-        scoreButton.setPosition(400, 400);
+    scoreButtonTexture.loadFromFile("./assets/buttons/score.png");
+    scoreButton.setTexture(scoreButtonTexture);
+    scoreButton.setScale(300.0f / scoreButton.getLocalBounds().width, 100.0f / scoreButton.getLocalBounds().height);
+    scoreButton.setPosition(400, 400);
 
-    //ajouter bouton quitter
-
-
-    //sound button
-    if (!soundOnTexture.loadFromFile("./assets/buttons/soundOn.png")) {
-        std::cout<< "Erreur: Impossible de charger soundOn.png!" << std::endl;
-    }
-    if (!soundOffTexture.loadFromFile("./assets/buttons/soundOff.png")) {
-        std::cout << "Erreur: Impossible de charger soundOff.png!" << std::endl;
-    }
+    soundOnTexture.loadFromFile("./assets/buttons/soundOn.png");
+    soundOffTexture.loadFromFile("./assets/buttons/soundOff.png");
     soundButton.setTexture(soundOnTexture);
-    soundButton.setScale(
-        100.0f / soundButton.getLocalBounds().width,
-         100.0f / soundButton.getLocalBounds().height);
+    soundButton.setScale(100.0f / soundButton.getLocalBounds().width, 100.0f / soundButton.getLocalBounds().height);
     soundButton.setPosition(0, 0);
 
-    if (!buffer.loadFromFile("./assets/sounds/music.mp3")) {
-        std::cout << "Erreur de chargement du son!" << std::endl;
-    }
-
+    buffer.loadFromFile("./assets/sounds/music.mp3");
     clickSound.setBuffer(buffer);
-    clickSound.play(); 
+    clickSound.play();
 }
 
-void MainMenu::run() {
+AppState MainMenu::run() {
     while (window.isOpen()) {
-        handleEvents();
-    }
-}
-
-
-void MainMenu::handleEvents(){
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-
-            if (event.type == sf::Event::MouseButtonPressed &&
-                event.mouseButton.button == sf::Mouse::Left) {
-
-                sf::Vector2f mousePos = window.mapPixelToCoords(
-                    sf::Mouse::getPosition(window)
-                );
-
-                if (playButton.getGlobalBounds().contains(mousePos)) {
-                    std::cout << "Démarrage du jeu!" << std::endl;
-                    
-                }
-                else if(scoreButton.getGlobalBounds().contains(mousePos)){
-                    std::cout <<"Affichage du tableau score" << std::endl;
-                }
-                else if (soundButton.getGlobalBounds().contains(mousePos)){
-                    isMuted = !isMuted;
-                    if (isMuted){
-                        soundButton.setTexture(soundOffTexture);
-                        std::cout<<"son désactivé"<< std::endl;
-                        clickSound.pause();
-                    }else {
-                        soundButton.setTexture(soundOnTexture);
-                        std::cout<<"son activé"<<std::endl;
-                        clickSound.play();
-                    }
-                }
-
-            }
-        }
+        AppState result = handleEvents();
+        if (result != AppState::MainMenu) return result;
         render();
     }
+    return AppState::Exit;
+}
+
+AppState MainMenu::handleEvents() {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+            return AppState::Exit;
+        }
+
+        if (event.type == sf::Event::MouseButtonPressed &&
+            event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+            if (playButton.getGlobalBounds().contains(mousePos)) {
+                return AppState::Game;
+            } else if (scoreButton.getGlobalBounds().contains(mousePos)) {
+                return AppState::Score;
+            } else if (soundButton.getGlobalBounds().contains(mousePos)) {
+                isMuted = !isMuted;
+                soundButton.setTexture(isMuted ? soundOffTexture : soundOnTexture);
+                if (isMuted) clickSound.pause();
+                else clickSound.play();
+            }
+        }
+    }
+    return AppState::MainMenu;
 }
 
 void MainMenu::render() {
@@ -121,4 +78,3 @@ void MainMenu::render() {
     window.draw(soundButton);
     window.display();
 }
-
