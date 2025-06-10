@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "game.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

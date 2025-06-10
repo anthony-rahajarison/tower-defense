@@ -1,9 +1,9 @@
-#include "Player.hpp"
-#include "map.hpp"
-#include "Wave.hpp"
 #ifndef GAME_HPP
 #define GAME_HPP
 #include <SFML/Graphics.hpp>
+#include "Player.hpp"
+#include "map.hpp"
+#include "Wave.hpp"
 
 
 enum class AppState {
