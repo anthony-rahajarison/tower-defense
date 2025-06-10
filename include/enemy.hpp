@@ -10,10 +10,10 @@ class Enemy {
         int maxHp = 10;
         float speed = 1;
         int reward = 5;
-        Position position;
         bool isAlive = true;
     
     public:
+        Position position;
         void receiveProjectile(Projectile proj);
         void takeDamage(int damage);
         void die();
