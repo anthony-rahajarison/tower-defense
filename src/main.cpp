@@ -4,7 +4,7 @@
 #include "ScoreScreen.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 1000), "KINGDOM SIEGE");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "KINGDOM SIEGE");
     AppState state = AppState::MainMenu;
 
     MainMenu menu(window);

@@ -7,8 +7,8 @@ enum class AppState;
 class MainMenu {
     private:
         sf::RenderWindow& window;
-        sf::Texture backgroundTexture, playButtonTexture, scoreButtonTexture, soundOnTexture, soundOffTexture;
-        sf::Sprite background, playButton, scoreButton, soundButton;
+        sf::Texture backgroundTexture, playButtonTexture, scoreButtonTexture, soundOnTexture, soundOffTexture, quitButtonTexture;
+        sf::Sprite background, playButton, scoreButton, soundButton, quitButton;
         sf::SoundBuffer buffer;
         sf::Sound clickSound;
         bool isMuted = false;
