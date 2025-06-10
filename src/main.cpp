@@ -1,27 +1,31 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include "MainMenu.hpp"
+#include "Game.hpp"
+#include "ScoreScreen.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(696, 523), "Tower Defense");
+    sf::RenderWindow window(sf::VideoMode(800, 800), "KINGDOM SIEGE");
+    AppState state = AppState::MainMenu;
 
-    sf::Texture texture;
-    if (!texture.loadFromFile("C:/Users/ponsb/OneDrive/Documents/tower-defense/assets/maps/map1.png")) {
-        std::cerr << "Erreur : image non trouvée" << std::endl;
-        return -1;
-    }
+    MainMenu menu(window);
+    Game game(window);
+    // ScoreScreen scoreScreen(window);
 
-    sf::Sprite sprite(texture);
-
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+    while (window.isOpen() && state != AppState::Exit) {
+        switch (state) {
+            case AppState::MainMenu:
+                state = menu.run();
+                break;
+            case AppState::InGame:
+                state = game.run();
+                break;
+            case AppState::ScoreScreen:
+                // state = scoreScreen.run();
+                break;
+            default:
                 window.close();
+                break;
         }
-        
-        window.clear();
-        window.draw(sprite);
-        window.display();
     }
 
     return 0;
