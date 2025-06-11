@@ -7,6 +7,8 @@ class Player {
         int credit = 0;
         bool gameover = false;
     public :
+        Player();
+        int returnCredit();
         void addCredit(int c);
         void removeCredit(int c);
         void removeLife();

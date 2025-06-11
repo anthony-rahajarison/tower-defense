@@ -1,4 +1,5 @@
 #include "projectile.hpp"
+#include "position.hpp"
 #include <iostream>
 
 #ifndef ENEMY_HPP
@@ -14,7 +15,7 @@ class Enemy {
     
     public:
         Position position;
-        void receiveProjectile(Projectile proj);
+        // void receiveProjectile(Projectile proj);
         void takeDamage(int damage);
         void die();
         void move(int x, int y);
