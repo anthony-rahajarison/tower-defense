@@ -36,28 +36,6 @@ Game::Game(sf::RenderWindow& win) : window(win) {
 }
 
 AppState Game::run() {
-    
-    //tower0
-    if (!tower0Texture.loadFromFile("./assets/tower/tower0.png")) {
-        std::cerr << "Erreur de chargement de tower0"<< std::endl;
-    }
-
-    if (!tower1Texture.loadFromFile("./assets/tower/tower1.png")) {
-        std::cerr << "Erreur de chargement de tower1"<< std::endl;
-    }
-
-    if (!tower2Texture.loadFromFile("./assets/tower/tower2.png")) {
-        std::cerr << "Erreur de chargement de tower2"<< std::endl;
-    }
-
-    towerA.texture = tower0Texture;
-    towerB.texture = tower0Texture;
-    towerC.texture = tower0Texture;
-    towerD.texture = tower0Texture;
-    towerE.texture = tower0Texture;
-    towerF.texture = tower0Texture;
-    
-
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -79,41 +57,28 @@ AppState Game::run() {
 void Game::handleInput(const sf::Event& event) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2f mousePos = window.mapPixelToCoords(
-                {event.mouseButton.x, event.mouseButton.y});
+            sf::Vector2f mousePos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
                 
             if (buttonWave.getGlobalBounds().contains(mousePos)) {
                 launchWave();
             }
             if (towerA.sprite.getGlobalBounds().contains(mousePos)){
-                towerA.upgrade();
-                std::cout << "UPGRADE";
-                towerA.texture = tower1Texture;
+                towerA.upgrade(&player);
             }
             if (towerB.sprite.getGlobalBounds().contains(mousePos)){
-                towerB.upgrade();
-                std::cout << "UPGRADE";
-                towerB.texture = tower1Texture;
+                towerB.upgrade(&player);
             }
             if (towerC.sprite.getGlobalBounds().contains(mousePos)){
-                towerC.upgrade();
-                std::cout << "UPGRADE";
-                towerC.texture = tower1Texture;
+                towerC.upgrade(&player);
             }
             if (towerD.sprite.getGlobalBounds().contains(mousePos)){
-                towerD.upgrade();
-                std::cout << "UPGRADE";
-                towerD.texture = tower1Texture;
+                towerD.upgrade(&player);
             }
             if (towerE.sprite.getGlobalBounds().contains(mousePos)){
-                towerE.upgrade();
-                std::cout << "UPGRADE";
-                towerE.texture = tower1Texture;
+                towerE.upgrade(&player);
             }
             if (towerF.sprite.getGlobalBounds().contains(mousePos)){
-                towerF.upgrade();
-                std::cout << "UPGRADE";
-                towerF.texture = tower1Texture;
+                towerF.upgrade(&player);
             }
         }
     }

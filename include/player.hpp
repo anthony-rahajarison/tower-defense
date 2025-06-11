@@ -1,10 +1,11 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+
 class Player {
     private : 
         int remainingLives = 3 ;
-        int credit = 0;
+        int credit = 100;
         bool gameover = false;
     public :
         Player();

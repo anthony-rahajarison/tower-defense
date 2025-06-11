@@ -13,14 +13,30 @@ void Tower::findTargets(Enemy enemy) {
     }
 }
 
-// Projectile Tower::sendProjectile() {
+void Tower::loadTextures() {
+    if (!tower0Texture.loadFromFile("./assets/tower/tower0.png")) {
+        std::cerr << "Erreur de chargement de tower0"<< std::endl;
+    }
 
-// }
+    if (!tower1Texture.loadFromFile("./assets/tower/tower1.png")) {
+        std::cerr << "Erreur de chargement de tower1"<< std::endl;
+    }
 
-void Tower::upgrade() {
-    this->level += 1;
-    this->sellPrice += 50;
-    this->upgradePrice += 100;
+    if (!tower2Texture.loadFromFile("./assets/tower/tower2.png")) {
+        std::cerr << "Erreur de chargement de tower2"<< std::endl;
+    }
+}
+//Towers Textures
+
+
+void Tower::upgrade(Player *playerobj) {
+    if (canUpgrade(playerobj->returnCredit())) {
+        playerobj->removeCredit(this->upgradePrice);
+        this->level += 1;
+        this->sellPrice += 50;
+        this->upgradePrice += 100;
+        this->texture = tower1Texture;
+    }
 }
 
 void Tower::destroy() {
@@ -43,4 +59,14 @@ void Tower::drawTower(sf::RenderWindow& window) {
 Tower::Tower(int x, int y) {
     position.set_x(x);
     position.set_y(y);
+
+    Tower::loadTextures();
+    this->texture = tower0Texture;
+}
+
+bool Tower::canUpgrade(int playerCredit) {
+    if (this->upgradePrice <= playerCredit) {
+        return true;
+    }
+    else return false;
 }

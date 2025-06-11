@@ -43,7 +43,7 @@ class Game {
         sf::Text CreditText;
         sf::Event event;
         std::vector<sf::Vector2f> pathPoints;
-        sf::Texture backgroundTexture , buttonWaveTexture, tower0Texture, tower1Texture, tower2Texture;
+        sf::Texture backgroundTexture , buttonWaveTexture;
         sf::Sprite buttonWave, background;
 
 };
