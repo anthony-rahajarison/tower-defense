@@ -12,3 +12,7 @@ void Projectile::move(int x, int y) {
 int Projectile::get_damage() {
     return this->damage;
 }
+
+Position Projectile::getPosition() {
+    return position;
+}

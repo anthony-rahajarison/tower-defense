@@ -10,7 +10,7 @@ class Projectile {
         float speed = 1;
         Position position;
     public :
-        void getPosition(int x, int y);
+        Position getPosition();
         void hitTarget(Enemy enemy);
         void move(int x, int y);
 

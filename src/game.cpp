@@ -5,6 +5,8 @@
 
 
 Game::Game(sf::RenderWindow& win) : window(win) {
+    Player player = Player();
+
     //Map
     if (!backgroundTexture.loadFromFile("assets/maps/map1.png")) {
         std::cerr << "Erreur de chargement de la texture de fond" << std::endl;
@@ -23,8 +25,6 @@ Game::Game(sf::RenderWindow& win) : window(win) {
     if (!MyFont.loadFromFile("./assets/font/MedievalSharp-Bold.ttf")) {
         std::cerr << "Erreur de chargement de la police" << std::endl;
     }
-
-    Player player = Player();
     
     //Credit Text
     CreditText.setFont(MyFont); 
@@ -62,22 +62,22 @@ void Game::handleInput(const sf::Event& event) {
             if (buttonWave.getGlobalBounds().contains(mousePos)) {
                 launchWave();
             }
-            if (towerA.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerA.sprite.getGlobalBounds().contains(mousePos)){
                 towerA.upgrade(&player);
             }
-            if (towerB.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerB.sprite.getGlobalBounds().contains(mousePos)){
                 towerB.upgrade(&player);
             }
-            if (towerC.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerC.sprite.getGlobalBounds().contains(mousePos)){
                 towerC.upgrade(&player);
             }
-            if (towerD.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerD.sprite.getGlobalBounds().contains(mousePos)){
                 towerD.upgrade(&player);
             }
-            if (towerE.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerE.sprite.getGlobalBounds().contains(mousePos)){
                 towerE.upgrade(&player);
             }
-            if (towerF.sprite.getGlobalBounds().contains(mousePos)){
+            else if (towerF.sprite.getGlobalBounds().contains(mousePos)){
                 towerF.upgrade(&player);
             }
         }
@@ -107,13 +107,21 @@ void Game::initPath() {
 
 void Game::launchWave() {
     std::cout << "Lancement de la vague !" << std::endl;
+    int x = 1; int y = 100;
+    Enemy enemy = Enemy();
+    
     while (window.isOpen()) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        
+        x++;
+        enemy.move(x, y);
         window.clear();
         window.draw(background);
+        enemy.drawEnemy(window);
+        drawTowers();
         window.display();
     }
 }

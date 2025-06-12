@@ -1,6 +1,7 @@
 #include "projectile.hpp"
 #include "position.hpp"
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
@@ -14,11 +15,19 @@ class Enemy {
         bool isAlive = true;
     
     public:
+        sf::Sprite sprite;
+        sf::Texture texture, enemy1, enemy2, enemy3;
         Position position;
+
         // void receiveProjectile(Projectile proj);
         void takeDamage(int damage);
         void die();
         void move(int x, int y);
+
+        void loadTextures();
+        void drawEnemy(sf::RenderWindow& window);
+
+        Enemy();
 };
 
 #endif

@@ -49,6 +49,10 @@ void Tower::drawTower(sf::RenderWindow& window) {
         color.a = 140;
         sprite.setColor(color);
         
+    } else {
+        sf::Color color = sprite.getColor();
+        color.a = 255;
+        sprite.setColor(color);
     }
     sprite.setTexture(texture);
     sprite.setPosition(position.get_x(), position.get_y());
@@ -56,11 +60,12 @@ void Tower::drawTower(sf::RenderWindow& window) {
     window.draw(sprite);
 }
 
+
 Tower::Tower(int x, int y) {
     position.set_x(x);
     position.set_y(y);
 
-    Tower::loadTextures();
+    loadTextures();
     this->texture = tower0Texture;
 }
 

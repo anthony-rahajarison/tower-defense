@@ -15,6 +15,7 @@ add_executable(TowerDefense     src/main.cpp
     src/Game.cpp  
     src/tower.cpp 
     src/player.cpp
+    src/enemy.cpp
     src/projectile.cpp
     src/position.cpp)
 
