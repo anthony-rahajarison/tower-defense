@@ -12,7 +12,11 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 
 add_executable(TowerDefense     src/main.cpp
     src/MainMenu.cpp
-    src/Game.cpp   )
+    src/Game.cpp  
+    src/tower.cpp 
+    src/player.cpp
+    src/projectile.cpp
+    src/position.cpp)
 
 # ${SOURCES}
 

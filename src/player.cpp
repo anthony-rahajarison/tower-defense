@@ -20,3 +20,10 @@ bool Player::isGameOver(){
     return this->gameover;
 };
 
+Player::Player() {
+
+}
+
+int Player::returnCredit() {
+    return this->credit;
+}
