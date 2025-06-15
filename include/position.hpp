@@ -10,6 +10,8 @@ class Position{
         void set_y(int value_y);
         int get_x();
         int get_y();
+        Position(int x, int y);
+        Position();
 };
 
 #endif
