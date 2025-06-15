@@ -95,32 +95,69 @@ void Game::initGame() {
 
 void Game::initPath() {
     pathPoints = {
-        sf::Vector2f(0, 200),
-        sf::Vector2f(200, 200),
-        sf::Vector2f(200, 400),
-        sf::Vector2f(600, 400),
-        sf::Vector2f(600, 200),
-        sf::Vector2f(800, 200)
+        {700, 700},
+        {700, 500},
+        {500, 500},
+        {500, 200},
+        {600, 200},
+        {600, 300},
+        {700, 300},
+        {700, 70}, 
+        {350, 70},
+        {350, 555},
+        {40, 555},
+        {40, 300},
+        {100, 300},
+        {100, 400},
+        {200, 400},
+        {200, 150},
+        {40, 150},
+        {40, 0}
     };
 }
 
 
 void Game::launchWave() {
     std::cout << "Lancement de la vague !" << std::endl;
-    int x = 1; int y = 100;
-    Enemy enemy = Enemy();
+
+    const int totalEnemies = 3;
+    const float spawnDelay = 0.5f;
+
+    std::vector<Enemy> enemies;
+    sf::Clock spawnClock;
+    size_t spawnedEnemies = 0;
+
+    sf::Clock frameClock;
     
     while (window.isOpen()) {
+        float deltaTime = frameClock.restart().asSeconds();
+
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+
+        // Create a new enemy
+        if (spawnedEnemies < totalEnemies && spawnClock.getElapsedTime().asSeconds() >= spawnDelay) {
+            Enemy e;
+            e.setPosition(pathPoints[0]);
+            enemies.push_back(e);
+            spawnedEnemies++;
+            spawnClock.restart();
+        }
+
+        // Change enemies position
+        for (auto& enemy : enemies) {
+            enemy.followPath(pathPoints, deltaTime);
+        }
+
         
-        x++;
-        enemy.move(x, y);
+        // Display Game
         window.clear();
         window.draw(background);
-        enemy.drawEnemy(window);
+        for (auto& enemy : enemies) {
+            enemy.drawEnemy(window);
+        }
         drawTowers();
         window.display();
     }
