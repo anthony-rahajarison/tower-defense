@@ -2,8 +2,6 @@
 #include <iostream>
 #include <cmath>
 
-
-
 Game::Game(sf::RenderWindow& win) : window(win) {
     Player player = Player();
 
@@ -145,6 +143,7 @@ void Game::launchWave() {
             spawnedEnemies++;
             spawnClock.restart();
         }
+
 
         // Change enemies position
         for (auto& enemy : enemies) {

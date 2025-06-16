@@ -17,6 +17,7 @@ add_executable(TowerDefense     src/main.cpp
     src/player.cpp
     src/enemy.cpp
     src/projectile.cpp
+    src/scoreScreen.cpp
     src/position.cpp)
 
 # ${SOURCES}
