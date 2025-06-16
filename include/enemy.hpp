@@ -8,9 +8,9 @@
 
 class Enemy {
     private:
-        int hp = 10;
         int maxHp = 10;
-        float speed = 500.0f;
+        int hp = maxHp;
+        float speed = 200.0f;
         int reward = 5;
         bool isAlive = true;
         int currentPathIndex = 0;
@@ -31,6 +31,7 @@ class Enemy {
         void setPosition(const sf::Vector2f& pos);
 
         Enemy();
+        Enemy(int lvl);
 };
 
 #endif

@@ -2,12 +2,16 @@
 #include <iostream>
 
 void Wave::createWavefromlevel(){
-    
+
 };
 
 bool Wave::waveEnded(){
-    if (this-> n_enemy == 0){
+    if (this-> totalEnemies == 0){
         this-> isover = true;
     }
     return this-> isover;
+}
+
+Wave::Wave(int lvl){
+    this->totalEnemies = 3 * lvl;
 }

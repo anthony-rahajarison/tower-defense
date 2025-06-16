@@ -119,9 +119,8 @@ void Game::initPath() {
 
 void Game::launchWave() {
     std::cout << "Lancement de la vague !" << std::endl;
-
-    const int totalEnemies = 3;
-    const float spawnDelay = 0.5f;
+    Wave wave = Wave(0);
+    const float SPAWNDELAY = 0.5f;
 
     std::vector<Enemy> enemies;
     sf::Clock spawnClock;
@@ -138,8 +137,8 @@ void Game::launchWave() {
         }
 
         // Create a new enemy
-        if (spawnedEnemies < totalEnemies && spawnClock.getElapsedTime().asSeconds() >= spawnDelay) {
-            Enemy e;
+        if (spawnedEnemies < wave.totalEnemies && spawnClock.getElapsedTime().asSeconds() >= SPAWNDELAY){
+            Enemy e = Enemy() ;
             e.setPosition(pathPoints[0]);
             enemies.push_back(e);
             spawnedEnemies++;

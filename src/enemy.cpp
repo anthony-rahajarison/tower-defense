@@ -68,3 +68,14 @@ Enemy::Enemy() {
         this->texture = enemy1;
     }
 }
+
+Enemy::Enemy(int lvl) {
+    loadTextures();
+    int type = 1;
+    if (type == 1) {
+        this->texture = enemy1;
+    }
+    this-> maxHp = 10 * lvl;
+    this-> speed = 150 + 50 * lvl ;
+}
+

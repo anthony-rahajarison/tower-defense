@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "map.hpp"
-#include "Wave.hpp"
+#include "wave.hpp"
 #include "tower.hpp"
 
 
@@ -19,8 +19,8 @@ enum class AppState {
 class Game {
     public:
         Player player;
-        Wave wave;
         int currentWaves = 1 ;
+    
         Game(sf::RenderWindow& win);
         AppState run();
         void initGame();
