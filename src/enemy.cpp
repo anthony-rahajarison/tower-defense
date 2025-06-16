@@ -1,12 +1,11 @@
 #include "enemy.hpp"
 #include <math.h>
 
-// void Enemy::receiveProjectile(Projectile proj) {
-//     this->takeDamage(proj.get_damage());
-// }
-
 void Enemy::takeDamage(int damage) {
     this->hp -= damage;
+    if (this->hp <= 0) {
+        die();
+    }
 }
 
 void Enemy::die() {

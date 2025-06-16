@@ -1,18 +1,49 @@
 #include "tower.hpp"
 
-void Tower::findTargets(Enemy enemy) {
-    int towerX = this->position.get_x();
-    int towerY = this->position.get_y();
-    int enemyX = enemy.position.get_x();
-    int enemyY = enemy.position.get_y();
+const std::vector<TowerStats> towerLevels = {
+// Range, DMG, AtkSpd, Sell
 
-    if ((enemyX <= towerX + this->towerRange) && (enemyX >= towerX - this->towerRange)) {
-        if ((enemyY <= towerY + this->towerRange) && (enemyY >= towerY - this->towerRange)) {
-            this->target = enemy;
+    {  0,  0,  0.f,   0}, // Level 0
+    {200, 10, 1.f, 100}, // Level 1
+    {250, 20, 0.5f, 200}, // Level 2
+    {300, 35, 0.3f, 300}  // Level 3
+};
+
+void Tower::update(std::vector<Enemy*>& enemies, float deltaTime) {
+    if (this->level == 0) { 
+        return; // Skip unbuilt towers
+    }
+
+    TowerStats stats = getStats();
+    
+    fireCooldown -= deltaTime; // Elapsed time since last shot
+
+    for (Enemy* enemy : enemies) {
+        if (!enemy->isAlive) continue;
+
+        sf::Vector2f enemyPos = enemy->sprite.getPosition();
+        float dx = position.get_x() - enemyPos.x;
+        float dy = position.get_y() - enemyPos.y;
+        float distance = std::sqrt(dx * dx + dy * dy);
+
+        if (distance <= stats.range && fireCooldown <= 0.f) {
+            enemy->takeDamage(stats.damage);
+            fireCooldown = stats.attackSpeed;
+            break;
         }
     }
 }
 
+TowerStats Tower::getStats() const {
+    if (this->level <= 3) {
+        return towerLevels[level];
+    }
+    std::cout << "Invalid tower level, returning empty tower" << std::endl;
+    return towerLevels[0];
+}
+
+
+//Towers Textures
 void Tower::loadTextures() {
     if (!tower0Texture.loadFromFile("./assets/tower/tower0.png")) {
         std::cerr << "Erreur de chargement de tower0"<< std::endl;
@@ -25,17 +56,31 @@ void Tower::loadTextures() {
     if (!tower2Texture.loadFromFile("./assets/tower/tower2.png")) {
         std::cerr << "Erreur de chargement de tower2"<< std::endl;
     }
+
+    if (!tower3Texture.loadFromFile("./assets/tower/tower3.png")) {
+        std::cerr << "Erreur de chargement de tower2"<< std::endl;
+    }
 }
-//Towers Textures
 
 
 void Tower::upgrade(Player *playerobj) {
-    if (canUpgrade(playerobj->returnCredit())) {
+    if (playerobj->returnCredit() >= upgradePrice) {
         playerobj->removeCredit(this->upgradePrice);
-        this->level += 1;
-        this->sellPrice += 50;
-        this->upgradePrice += 100;
-        this->texture = tower1Texture;
+        this->level ++;
+        switch (level) {
+            case 1:
+                texture = tower1Texture;
+                break;
+            case 2:
+                texture = tower2Texture;
+                break;
+            case 3:
+                texture = tower3Texture;
+                break;
+            default:
+                break;
+        }
+        sprite.setTexture(texture);
     }
 }
 
@@ -64,14 +109,9 @@ void Tower::drawTower(sf::RenderWindow& window) {
 Tower::Tower(int x, int y) {
     position.set_x(x);
     position.set_y(y);
+    this->level = 0;
+    this->fireCooldown = 0.f;
 
     loadTextures();
     this->texture = tower0Texture;
-}
-
-bool Tower::canUpgrade(int playerCredit) {
-    if (this->upgradePrice <= playerCredit) {
-        return true;
-    }
-    else return false;
 }

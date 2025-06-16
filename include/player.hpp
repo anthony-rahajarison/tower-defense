@@ -5,7 +5,7 @@
 class Player {
     private : 
         int remainingLives = 3 ;
-        int credit = 100;
+        int credit = 300;
         bool gameover = false;
     public :
         Player();

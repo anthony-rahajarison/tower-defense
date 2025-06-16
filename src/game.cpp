@@ -120,7 +120,7 @@ void Game::initPath() {
 void Game::launchWave() {
     std::cout << "Lancement de la vague !" << std::endl;
 
-    const int totalEnemies = 3;
+    const int totalEnemies = 10;
     const float spawnDelay = 0.5f;
 
     std::vector<Enemy> enemies;
@@ -148,15 +148,32 @@ void Game::launchWave() {
 
         // Change enemies position
         for (auto& enemy : enemies) {
-            enemy.followPath(pathPoints, deltaTime);
+            if (enemy.isAlive) {
+                enemy.followPath(pathPoints, deltaTime);
+            }
         }
 
+        std::vector<Enemy*> enemyPtrs;
+        for (auto& e : enemies) {
+            if (e.isAlive) {
+                enemyPtrs.push_back(&e);
+            }
+        }
+
+        towerA.update(enemyPtrs, deltaTime);
+        towerB.update(enemyPtrs, deltaTime);
+        towerC.update(enemyPtrs, deltaTime);
+        towerD.update(enemyPtrs, deltaTime);
+        towerE.update(enemyPtrs, deltaTime);
+        towerF.update(enemyPtrs, deltaTime);
         
         // Display Game
         window.clear();
         window.draw(background);
         for (auto& enemy : enemies) {
-            enemy.drawEnemy(window);
+            if (enemy.isAlive) {
+                enemy.drawEnemy(window);
+            }
         }
         drawTowers();
         window.display();
