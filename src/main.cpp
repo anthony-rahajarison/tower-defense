@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "MainMenu.hpp"
 #include "Game.hpp"
-#include "ScoreScreen.hpp"
+#include "scoreScreen.hpp"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "KINGDOM SIEGE");
@@ -9,7 +9,7 @@ int main() {
 
     MainMenu menu(window);
     Game game(window);
-    // ScoreScreen scoreScreen(window);
+    scoreScreen scoreScreen(window); 
 
     while (window.isOpen() && state != AppState::Exit) {
         switch (state) {
@@ -20,7 +20,7 @@ int main() {
                 state = game.run();
                 break;
             case AppState::ScoreScreen:
-                // state = scoreScreen.run();
+                state = scoreScreen.run();
                 break;
             default:
                 window.close();
