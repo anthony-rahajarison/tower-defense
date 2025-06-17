@@ -3,11 +3,13 @@
 const std::vector<TowerStats> towerLevels = {
 // Range, DMG, AtkSpd, Sell
 
-    {  0,  0,  0.f,   0}, // Level 0
-    {200, 10, 1.f, 100}, // Level 1
-    {250, 20, 0.5f, 200}, // Level 2
-    {300, 35, 0.3f, 300}  // Level 3
+    {  0,  0, 0.f,    0}, // Level 0
+    {200, 10, 1.f,  100}, // Level 1
+    {250, 20, 0.7f, 200}, // Level 2
+    {300, 35, 0.5f, 300}  // Level 3
 };
+
+const int Tower::upgradePrices[3] = {100, 500, 3000}; // Prix pour passer niveau 1, 2, 3
 
 void Tower::update(std::vector<Enemy*>& enemies, float deltaTime) {
     if (this->level == 0) { 
@@ -45,28 +47,34 @@ TowerStats Tower::getStats() const {
 
 //Towers Textures
 void Tower::loadTextures() {
-    if (!tower0Texture.loadFromFile("./assets/tower/tower0.png")) {
+    if (!tower0Texture.loadFromFile("./assets/tower/magicTower0.png")) {
         std::cerr << "Erreur de chargement de tower0"<< std::endl;
     }
 
-    if (!tower1Texture.loadFromFile("./assets/tower/tower1.png")) {
+    if (!tower1Texture.loadFromFile("./assets/tower/magicTower1.png")) {
         std::cerr << "Erreur de chargement de tower1"<< std::endl;
     }
 
-    if (!tower2Texture.loadFromFile("./assets/tower/tower2.png")) {
+    if (!tower2Texture.loadFromFile("./assets/tower/magicTower2.png")) {
         std::cerr << "Erreur de chargement de tower2"<< std::endl;
     }
 
-    if (!tower3Texture.loadFromFile("./assets/tower/tower3.png")) {
-        std::cerr << "Erreur de chargement de tower2"<< std::endl;
+    if (!tower3Texture.loadFromFile("./assets/tower/magicTower3.png")) {
+        std::cerr << "Erreur de chargement de tower3"<< std::endl;
     }
 }
 
 
 void Tower::upgrade(Player *playerobj) {
-    if (playerobj->returnCredit() >= upgradePrice) {
-        playerobj->removeCredit(this->upgradePrice);
-        this->level ++;
+    if (this->level >= 3) {
+        std::cout << "Tower is already at max level." << std::endl;
+        return;
+    }
+
+    int price = upgradePrices[level]; // Get the price for the next upgrade
+    if (playerobj->returnCredit() >= price) {
+        playerobj->removeCredit(price);
+        this->level++;
         switch (level) {
             case 1:
                 texture = tower1Texture;
@@ -81,6 +89,8 @@ void Tower::upgrade(Player *playerobj) {
                 break;
         }
         sprite.setTexture(texture);
+    } else {
+        std::cout << "Not enough credits to upgrade." << std::endl;
     }
 }
 
@@ -101,7 +111,7 @@ void Tower::drawTower(sf::RenderWindow& window) {
     }
     sprite.setTexture(texture);
     sprite.setPosition(position.get_x(), position.get_y());
-    sprite.setScale(1.5f, 1.5f);
+    sprite.setScale(0.8f, 0.8f);
     window.draw(sprite);
 }
 

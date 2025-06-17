@@ -1,13 +1,21 @@
 #include "wave.hpp"
 #include <iostream>
 
-void Wave::createWavefromlevel(){
-    
-};
+// New wave creation based on level
+void Wave::nextWave() {
+    waveLevel++;
+    n_enemy = 10 + (waveLevel - 1) * 5;
 
-bool Wave::waveEnded(){
-    if (this-> n_enemy == 0){
-        this-> isover = true;
+    // Reduce spawn delay for each 5th wave
+    if (waveLevel % 5 == 0 && spawnDelay > 0.15f) {
+        spawnDelay -= 0.1f;
+        if (spawnDelay < 0.15f) spawnDelay = 0.15f;
     }
-    return this-> isover;
+}
+
+// Reset wave to initial state
+void Wave::reset() {
+    waveLevel = 1;
+    n_enemy = 5;
+    spawnDelay = 0.5f;
 }

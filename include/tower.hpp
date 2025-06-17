@@ -21,6 +21,7 @@ class Tower {
         int sellPrice = 0;
         Enemy target;
         float fireCooldown = 0.f;
+        static const int upgradePrices[3];
 
     
     public :

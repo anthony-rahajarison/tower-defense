@@ -10,7 +10,7 @@ void Player::removeCredit(int c){
 };
 
 void Player::removeLife(){
-    this -> remainingLives -1;
+    this->remainingLives--;
 };
 
 bool Player::isGameOver(){
@@ -26,4 +26,8 @@ Player::Player() {
 
 int Player::returnCredit() {
     return this->credit;
+}
+
+int Player::returnLives() {
+    return this->remainingLives;
 }

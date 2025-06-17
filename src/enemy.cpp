@@ -60,10 +60,23 @@ void Enemy::setPosition(const sf::Vector2f& pos) {
     currentPathIndex = 1; // Set next point as target
 }
 
-Enemy::Enemy() {
+int Enemy::getReward() {
+    return this->reward;
+}
+
+Enemy::Enemy(int level) {
     loadTextures();
     int type = 1;
     if (type == 1) {
         this->texture = enemy1;
+    }
+
+    // Hp and speed based on level
+    this->maxHp = 10 + (level - 1) * 5;
+    this->hp = this->maxHp;
+    this->speed = 100.0f + (level - 1) * 20.0f;
+    this->reward = 10 + (level - 1) * 2;
+    if (this->reward > 25) {
+        this->reward = 25; // Cap the reward at 25
     }
 }

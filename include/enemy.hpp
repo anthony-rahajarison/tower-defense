@@ -1,4 +1,3 @@
-#include "projectile.hpp"
 #include "position.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -8,14 +7,15 @@
 
 class Enemy {
     private:
-        int hp = 10;
-        int maxHp = 10;
-        float speed = 100.0f;
-        int reward = 5;
-        int currentPathIndex = 0;
-    
+        int hp;
+        int maxHp;
+        float speed;
+        int reward;
+        int level; // Ajout du niveau
+
     public:
         bool isAlive = true;
+        int currentPathIndex = 0;
         sf::Sprite sprite;
         sf::Texture texture, enemy1, enemy2, enemy3;
         Position position;
@@ -28,8 +28,9 @@ class Enemy {
         void followPath(const std::vector<sf::Vector2f>& path, float deltaTime);
 
         void setPosition(const sf::Vector2f& pos);
+        int getReward();
 
-        Enemy();
+        Enemy(int level = 1);
 };
 
 #endif

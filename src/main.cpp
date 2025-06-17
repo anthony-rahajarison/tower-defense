@@ -8,7 +8,6 @@ int main() {
     AppState state = AppState::MainMenu;
 
     MainMenu menu(window);
-    Game game(window);
     scoreScreen scoreScreen(window); 
 
     while (window.isOpen() && state != AppState::Exit) {
@@ -16,9 +15,11 @@ int main() {
             case AppState::MainMenu:
                 state = menu.run();
                 break;
-            case AppState::InGame:
+            case AppState::InGame: {
+                Game game(window);
                 state = game.run();
                 break;
+            }
             case AppState::ScoreScreen:
                 state = scoreScreen.run();
                 break;

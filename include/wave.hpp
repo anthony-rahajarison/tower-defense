@@ -1,14 +1,14 @@
 #ifndef WAVE_HPP
 #define WAVE_HPP
 
-class Wave{
+class Wave {
     public:
+        int waveLevel = 1;
         int n_enemy = 5;
-        int level = 0;
-        bool isover = false;
+        float spawnDelay = 0.5f;
 
-
-    bool waveEnded();
-    void createWavefromlevel();
+        void nextWave();
+        void reset();
 };
+
 #endif

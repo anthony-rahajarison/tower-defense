@@ -10,6 +10,7 @@ class Player {
     public :
         Player();
         int returnCredit();
+        int returnLives();
         void addCredit(int c);
         void removeCredit(int c);
         void removeLife();

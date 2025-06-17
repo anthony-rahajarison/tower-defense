@@ -61,12 +61,13 @@ AppState MainMenu::handleEvents() {
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             if (playButton.getGlobalBounds().contains(mousePos)) {
+                std::cout << "Starting the game..." << std::endl;
                 return AppState::Game;
             } else if (scoreButton.getGlobalBounds().contains(mousePos)) {
                 return AppState::Score;
             } else if (quitButton.getGlobalBounds().contains(mousePos)){
                 window.close();
-                std::cout<<"fermeture du programme";
+                std::cout<<"Closing the game"<<std::endl;
                 return AppState::Exit;
             } else if (soundButton.getGlobalBounds().contains(mousePos)) {
                 isMuted = !isMuted;

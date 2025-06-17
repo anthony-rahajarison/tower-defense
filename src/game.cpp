@@ -34,7 +34,7 @@ Game::Game(sf::RenderWindow& win) : window(win) {
 }
 
 AppState Game::run() {
-    while (window.isOpen()) {
+    while (window.isOpen() && !gameOver) { // Ajoute !gameOver ici
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -49,7 +49,7 @@ AppState Game::run() {
         window.display();
     }
 
-    return AppState::MainMenu;
+    return AppState::MainMenu; // Retourne bien au menu principal après Game Over
 }
 
 void Game::handleInput(const sf::Event& event) {
@@ -58,7 +58,15 @@ void Game::handleInput(const sf::Event& event) {
             sf::Vector2f mousePos = window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
                 
             if (buttonWave.getGlobalBounds().contains(mousePos)) {
-                launchWave();
+                bool isGameOver = launchWave();
+                if (!isGameOver) {
+                    wave.nextWave();
+                }
+                else {
+                    std::cout << "Game Over! Returning to Main Menu." << std::endl;
+                    gameOver = true;
+                    return; // Exit the game loop
+                }
             }
             else if (towerA.sprite.getGlobalBounds().contains(mousePos)){
                 towerA.upgrade(&player);
@@ -115,11 +123,11 @@ void Game::initPath() {
 }
 
 
-void Game::launchWave() {
-    std::cout << "Lancement de la vague !" << std::endl;
+bool Game::launchWave() {
+    std::cout << "Lancement de la vague " << wave.waveLevel << " !" << std::endl;
 
-    const int totalEnemies = 10;
-    const float spawnDelay = 0.5f;
+    int totalEnemies = wave.n_enemy;
+    float spawnDelay = wave.spawnDelay;
 
     std::vector<Enemy> enemies;
     sf::Clock spawnClock;
@@ -127,6 +135,9 @@ void Game::launchWave() {
 
     sf::Clock frameClock;
     
+    // Put enemies in a vector to keep track of them
+    std::vector<bool> rewarded(totalEnemies, false);
+
     while (window.isOpen()) {
         float deltaTime = frameClock.restart().asSeconds();
 
@@ -137,13 +148,13 @@ void Game::launchWave() {
 
         // Create a new enemy
         if (spawnedEnemies < totalEnemies && spawnClock.getElapsedTime().asSeconds() >= spawnDelay) {
-            Enemy e;
+            Enemy e(wave.waveLevel); // Get wave level for enemy
             e.setPosition(pathPoints[0]);
             enemies.push_back(e);
+            rewarded[spawnedEnemies] = false; // Flag for reward
             spawnedEnemies++;
             spawnClock.restart();
         }
-
 
         // Change enemies position
         for (auto& enemy : enemies) {
@@ -165,7 +176,56 @@ void Game::launchWave() {
         towerD.update(enemyPtrs, deltaTime);
         towerE.update(enemyPtrs, deltaTime);
         towerF.update(enemyPtrs, deltaTime);
+
+        // Add credit if an enemy is killed
+        for (size_t i = 0; i < enemies.size(); ++i) {
+            if (!enemies[i].isAlive && !rewarded[i]) {
+                player.addCredit(enemies[i].getReward());
+                rewarded[i] = true;
+            }
+        }
         
+        // Verify if all enemies have been spawned
+        bool allEnemiesSpawned = (spawnedEnemies == totalEnemies);
+
+        // Count alive enemies
+        int aliveEnemies = 0;
+        for (const Enemy& ennemi : enemies) {
+            if (ennemi.isAlive) {
+                aliveEnemies++;
+            }
+        }
+
+        if (allEnemiesSpawned && aliveEnemies == 0) {
+            // All enemies have been spawned and defeated
+            std::cout << "Wave is over" << std::endl;
+            break;
+        }
+
+        // Check if any enemy has reached the end of the path
+        for (auto& enemy : enemies) {
+            if (enemy.isAlive && enemy.currentPathIndex >= pathPoints.size()) {
+                player.removeLife();
+                enemy.isAlive = false;
+                std::cout << "Un ennemi a atteint la fin ! Vies restantes : " << player.returnLives() << std::endl;
+            }
+        }
+
+        // Check if the game is over
+        if (player.isGameOver()) {
+            std::cout << "GAME OVER !" << std::endl;
+            sf::Text gameOverText;
+            gameOverText.setFont(MyFont);
+            gameOverText.setString("GAME OVER");
+            gameOverText.setCharacterSize(80);
+            gameOverText.setFillColor(sf::Color::Red);
+            gameOverText.setPosition(200, 350);
+            window.draw(gameOverText);
+            window.display();
+            sf::sleep(sf::seconds(2));
+            return true;
+        }
+
         // Display Game
         window.clear();
         window.draw(background);
@@ -174,9 +234,12 @@ void Game::launchWave() {
                 enemy.drawEnemy(window);
             }
         }
+        CreditText.setString("Credits : " + std::to_string(player.returnCredit()));
+        window.draw(CreditText);
         drawTowers();
         window.display();
     }
+    return false; // Keep the game running
 }
 
 void Game::drawTowers(){
