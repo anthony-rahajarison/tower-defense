@@ -1,12 +1,12 @@
 #include "tower.hpp"
 
 const std::vector<TowerStats> towerLevels = {
-// Range, DMG, AtkSpd, Sell
+// Range, DMG, AtkSpd
 
-    {  0,  0, 0.f,    0}, // Level 0
-    {200, 10, 1.f,  100}, // Level 1
-    {250, 20, 0.7f, 200}, // Level 2
-    {300, 35, 0.5f, 300}  // Level 3
+    {  0,  0, 0.f}, // Level 0
+    {200, 10, 1.f}, // Level 1
+    {250, 20, 0.7f}, // Level 2
+    {300, 35, 0.5f}  // Level 3
 };
 
 const int Tower::upgradePrices[3] = {100, 500, 3000}; // Prix pour passer niveau 1, 2, 3
@@ -92,10 +92,6 @@ void Tower::upgrade(Player *playerobj) {
     } else {
         std::cout << "Not enough credits to upgrade." << std::endl;
     }
-}
-
-void Tower::destroy() {
-    this->level = 0;
 }
 
 void Tower::drawTower(sf::RenderWindow& window) {

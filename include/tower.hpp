@@ -12,7 +12,6 @@ struct TowerStats {
     int range;
     int damage;
     float attackSpeed;
-    int sellPrice;
 };
 
 class Tower {
@@ -34,9 +33,8 @@ class Tower {
         void drawTower(sf::RenderWindow& window);
 
         TowerStats getStats() const;
-        int upgradePrice = 100;
+        int upgradePrice;
         void upgrade(Player *playerobj);
-        void destroy();
         void update(std::vector<Enemy*>& enemies, float deltaTime);
         
         Tower(int x, int y);

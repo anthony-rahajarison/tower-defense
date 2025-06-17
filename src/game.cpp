@@ -177,10 +177,11 @@ bool Game::launchWave() {
         towerE.update(enemyPtrs, deltaTime);
         towerF.update(enemyPtrs, deltaTime);
 
-        // Add credit if an enemy is killed
+        // Add credit and score if an enemy is killed
         for (size_t i = 0; i < enemies.size(); ++i) {
             if (!enemies[i].isAlive && !rewarded[i]) {
                 player.addCredit(enemies[i].getReward());
+                player.addScore(1);
                 rewarded[i] = true;
             }
         }
@@ -214,12 +215,13 @@ bool Game::launchWave() {
         // Check if the game is over
         if (player.isGameOver()) {
             std::cout << "GAME OVER !" << std::endl;
+            Player::saveHighScore(player.returnScore());
             sf::Text gameOverText;
             gameOverText.setFont(MyFont);
-            gameOverText.setString("GAME OVER");
+            gameOverText.setString("GAME OVER\nScore : " + std::to_string(player.returnScore())); // Display score and Game Over message
             gameOverText.setCharacterSize(80);
             gameOverText.setFillColor(sf::Color::Red);
-            gameOverText.setPosition(200, 350);
+            gameOverText.setPosition(200, 300);
             window.draw(gameOverText);
             window.display();
             sf::sleep(sf::seconds(2));
