@@ -11,7 +11,7 @@ class Enemy {
         int maxHp;
         float speed;
         int reward;
-        int level; // Ajout du niveau
+        int level;
 
     public:
         bool isAlive = true;

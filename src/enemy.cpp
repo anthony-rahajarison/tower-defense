@@ -21,6 +21,26 @@ void Enemy::drawEnemy(sf::RenderWindow& window) {
     sprite.setTexture(texture);
     sprite.setScale(1.f, 1.f);
     window.draw(sprite);
+
+    // Display health bar above the enemy
+    if (hp < maxHp) {
+        float barWidth = sprite.getGlobalBounds().width;
+        float barHeight = 6.f;
+        float x = sprite.getPosition().x;
+        float y = sprite.getPosition().y - barHeight - 4.f;
+
+        sf::RectangleShape backBar(sf::Vector2f(barWidth, barHeight));
+        backBar.setFillColor(sf::Color(150, 0, 0));
+        backBar.setPosition(x, y);
+
+        float hpRatio = static_cast<float>(hp) / maxHp;
+        sf::RectangleShape hpBar(sf::Vector2f(barWidth * hpRatio, barHeight));
+        hpBar.setFillColor(sf::Color(0, 200, 0));
+        hpBar.setPosition(x, y);
+
+        window.draw(backBar);
+        window.draw(hpBar);
+    }
 }
 
 void Enemy::loadTextures() {
@@ -71,7 +91,7 @@ Enemy::Enemy(int level) {
         this->texture = enemy1;
     }
 
-    // Hp and speed based on level
+    // Hp, speed and rewards based on level
     this->maxHp = 10 + (level - 1) * 5;
     this->hp = this->maxHp;
     this->speed = 100.0f + (level - 1) * 20.0f;
