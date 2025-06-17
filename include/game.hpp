@@ -38,10 +38,13 @@ class Game {
         sf::RenderWindow& window;
         sf::Font MyFont;
         sf::Text CreditText;
+        sf::Text TimerText;
+        sf::Text WaveText;
         sf::Event event;
         std::vector<sf::Vector2f> pathPoints;
         sf::Texture backgroundTexture , buttonWaveTexture;
         sf::Sprite buttonWave, background;
+        sf::Clock gameClock;
 
 };
 #endif

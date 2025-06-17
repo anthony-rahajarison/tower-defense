@@ -18,7 +18,7 @@ Game::Game(sf::RenderWindow& win) : window(win) {
     }
     buttonWave.setTexture(buttonWaveTexture);
     buttonWave.setScale(150.0f / buttonWave.getLocalBounds().width, 150.0f / buttonWave.getLocalBounds().height);
-    buttonWave.setPosition(350,0);
+    buttonWave.setPosition(350,40);
 
     if (!MyFont.loadFromFile("./assets/font/MedievalSharp-Bold.ttf")) {
         std::cerr << "Erreur de chargement de la police" << std::endl;
@@ -26,30 +26,55 @@ Game::Game(sf::RenderWindow& win) : window(win) {
     
     //Credit Text
     CreditText.setFont(MyFont); 
-    CreditText.setCharacterSize(40);
-    CreditText.setPosition(550,0);
+    CreditText.setCharacterSize(32);
+    CreditText.setPosition(600, 0);
     CreditText.setFillColor(sf::Color::White);
+
+    // Timer Text
+    TimerText.setFont(MyFont);
+    TimerText.setCharacterSize(32);
+    TimerText.setFillColor(sf::Color::White);
+    TimerText.setPosition(300, 0);
+
+    // Wave Text
+    WaveText.setFont(MyFont);
+    WaveText.setCharacterSize(32);
+    WaveText.setFillColor(sf::Color::White);
+    WaveText.setPosition(100, 0);
+
+    gameClock.restart();
 
     initGame();
 }
 
 AppState Game::run() {
-    while (window.isOpen() && !gameOver) { // Ajoute !gameOver ici
+    while (window.isOpen() && !gameOver) {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
             handleInput(event);
         }
         window.clear();
+
+        // Update UI texts
+        float elapsed = gameClock.getElapsedTime().asSeconds();
+        int minutes = static_cast<int>(elapsed) / 60;
+        int seconds = static_cast<int>(elapsed) % 60;
+        TimerText.setString("Temps : " + std::to_string(minutes) + "m " + (seconds < 10 ? "0" : "") + std::to_string(seconds) + "s");
+        WaveText.setString("Vague : " + std::to_string(wave.waveLevel));
         CreditText.setString("Credits : " + std::to_string(player.returnCredit()));
+
+        // Display
         window.draw(background);
+        window.draw(WaveText);
+        window.draw(TimerText);
         window.draw(CreditText);
         drawTowers();
         window.draw(buttonWave);
         window.display();
     }
 
-    return AppState::MainMenu; // Retourne bien au menu principal après Game Over
+    return AppState::MainMenu;
 }
 
 void Game::handleInput(const sf::Event& event) {
@@ -228,16 +253,25 @@ bool Game::launchWave() {
             return true;
         }
 
+        // Update UI texts
+        float elapsed = gameClock.getElapsedTime().asSeconds();
+        int minutes = static_cast<int>(elapsed) / 60;
+        int seconds = static_cast<int>(elapsed) % 60;
+        TimerText.setString("Temps : " + std::to_string(minutes) + "m " + (seconds < 10 ? "0" : "") + std::to_string(seconds) + "s");
+        WaveText.setString("Vague : " + std::to_string(wave.waveLevel));
+        CreditText.setString("Credits : " + std::to_string(player.returnCredit()));
+
         // Display Game
         window.clear();
         window.draw(background);
+        window.draw(WaveText);
+        window.draw(TimerText);
+        window.draw(CreditText);
         for (auto& enemy : enemies) {
             if (enemy.isAlive) {
                 enemy.drawEnemy(window);
             }
         }
-        CreditText.setString("Credits : " + std::to_string(player.returnCredit()));
-        window.draw(CreditText);
         drawTowers();
         window.display();
     }
